@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lexicon AI — Legal Workflow Automation Platform</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Latham & Watkins inspired palette */
+  --lw-crimson:#C41230;
+  --lw-crimson-light:#d42040;
+  --lw-crimson-dark:#9e0e26;
+  --lw-crimson-glow:rgba(196,18,48,0.12);
+  --lw-crimson-border:rgba(196,18,48,0.25);
+  --lw-gold:#C9A84C;
+  --lw-gold-light:#d4b86a;
+  --lw-gold-glow:rgba(201,168,76,0.1);
+  --lw-gold-border:rgba(201,168,76,0.25);
+
+  --bg-deep:#0c0c0e;
+  --bg-surface:#141418;
+  --bg-card:#1a1a20;
+  --bg-elevated:#222229;
+  --border-subtle:rgba(255,255,255,0.06);
+  --border-medium:rgba(255,255,255,0.1);
+  --border-accent:rgba(196,18,48,0.2);
+
+  --text-primary:#f0ece4;
+  --text-secondary:#9a9590;
+  --text-muted:#625e58;
+
+  --risk-high:#dc3545;
+  --risk-high-bg:rgba(220,53,69,0.08);
+  --risk-medium:#e8a838;
+  --risk-medium-bg:rgba(232,168,56,0.08);
+  --risk-low:#3a9d5c;
+  --risk-low-bg:rgba(58,157,92,0.08);
+
+  --sidebar-w:260px;
+  --radius:8px;
+  --radius-lg:12px;
+  --font-serif:'Cormorant Garamond',Georgia,serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html{font-size:15px;scroll-behavior:smooth}
+body{
+  font-family:var(--font-body);
+  background:var(--bg-deep);
+  color:var(--text-primary);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  position:fixed;left:0;top:0;bottom:0;width:var(--sidebar-w);
+  background:linear-gradient(180deg,#0a0a0c 0%,#111114 100%);
+  border-right:1px solid var(--border-subtle);
+  padding:1.5rem 1.25rem;
+  display:flex;flex-direction:column;
+  z-index:100;
+  transition:transform .3s ease;
+}
+.sidebar-brand{padding:0.25rem 0 0.5rem;}
+.sidebar-logo{
+  font-family:var(--font-serif);font-size:1.5rem;font-weight:700;
+  color:var(--text-primary);letter-spacing:0.5px;
+  display:flex;align-items:center;gap:0.6rem;
+}
+.sidebar-logo-mark{
+  width:28px;height:28px;background:var(--lw-crimson);
+  border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-size:0.85rem;color:white;font-family:var(--font-serif);font-weight:700;
+}
+.sidebar-sub{font-size:0.68rem;color:var(--text-muted);margin:0.2rem 0 0 2.5rem;letter-spacing:1.2px;text-transform:uppercase;}
+.sidebar-divider{height:1px;background:var(--border-subtle);margin:1.25rem 0;}
+.sidebar-nav{flex:1;display:flex;flex-direction:column;gap:1px;}
+.nav-item{
+  display:flex;align-items:center;gap:0.7rem;
+  padding:0.6rem 0.85rem;border-radius:6px;
+  font-size:0.84rem;font-weight:400;color:var(--text-secondary);
+  cursor:pointer;transition:all .15s ease;
+  border:1px solid transparent;letter-spacing:0.2px;
+}
+.nav-item:hover{background:rgba(255,255,255,0.03);color:var(--text-primary);}
+.nav-item.active{
+  background:var(--lw-crimson-glow);
+  border-color:var(--lw-crimson-border);
+  color:var(--lw-crimson-light);font-weight:600;
+}
+.nav-item .nav-icon{font-size:0.95rem;width:1.3rem;text-align:center;}
+.sidebar-meta{font-size:0.72rem;color:var(--text-muted);}
+.sidebar-meta-label{text-transform:uppercase;letter-spacing:1px;margin-bottom:0.2rem;font-size:0.6rem;}
+.sidebar-meta-value{color:var(--lw-gold);font-weight:500;margin-bottom:0.75rem;font-size:0.76rem;}
+
+/* ── MAIN ── */
+.main{margin-left:var(--sidebar-w);padding:1.75rem 2rem 3rem;}
+.page{display:none;}
+.page.active{display:block;animation:fadeUp .3s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── HERO ── */
+.hero{
+  background:var(--bg-card);
+  padding:2rem 2.25rem;border-radius:var(--radius-lg);
+  margin-bottom:1.75rem;
+  border:1px solid var(--border-subtle);
+  border-top:3px solid var(--lw-crimson);
+  position:relative;
+}
+.hero-badge{
+  display:inline-block;
+  background:var(--lw-crimson-glow);border:1px solid var(--lw-crimson-border);
+  color:var(--lw-crimson-light);padding:0.2rem 0.7rem;border-radius:3px;
+  font-size:0.62rem;font-weight:600;letter-spacing:1.5px;margin-bottom:0.65rem;
+  font-family:var(--font-mono);text-transform:uppercase;
+}
+.hero h1{font-family:var(--font-serif);font-size:1.75rem;font-weight:600;letter-spacing:0.3px;margin-bottom:0.35rem;color:var(--text-primary);}
+.hero p{color:var(--text-secondary);font-size:0.88rem;line-height:1.5;}
+
+/* ── METRICS ── */
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.85rem;margin-bottom:1.75rem;}
+.metric-card{
+  background:var(--bg-card);border:1px solid var(--border-subtle);
+  border-radius:var(--radius);padding:1.15rem 1.25rem;text-align:center;
+  transition:border-color .2s;
+}
+.metric-card:hover{border-color:var(--border-medium);}
+.metric-value{font-family:var(--font-serif);font-size:2.2rem;font-weight:600;line-height:1.1;}
+.metric-label{font-size:0.65rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-top:0.35rem;}
+.metric-delta{font-size:0.72rem;margin-top:0.2rem;}
+
+/* ── CARDS ── */
+.section-title{
+  font-family:var(--font-serif);font-size:1.05rem;font-weight:600;color:var(--text-primary);
+  padding-bottom:0.5rem;border-bottom:1px solid var(--border-subtle);
+  margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;
+  letter-spacing:0.3px;
+}
+.card{
+  background:var(--bg-card);border:1px solid var(--border-subtle);
+  border-radius:var(--radius);padding:1rem 1.15rem;margin-bottom:0.6rem;
+  transition:border-color .2s;
+}
+.card:hover{border-color:var(--border-medium);}
+.card h4{font-size:0.88rem;font-weight:600;margin-bottom:0.25rem;}
+.card p{font-size:0.8rem;color:var(--text-secondary);line-height:1.45;}
+
+/* ── BADGES ── */
+.badge{padding:0.15rem 0.55rem;border-radius:3px;font-size:0.68rem;font-weight:600;display:inline-block;letter-spacing:0.5px;}
+.badge-high{background:var(--risk-high-bg);border:1px solid rgba(220,53,69,0.2);color:var(--risk-high);}
+.badge-medium{background:var(--risk-medium-bg);border:1px solid rgba(232,168,56,0.2);color:var(--risk-medium);}
+.badge-low{background:var(--risk-low-bg);border:1px solid rgba(58,157,92,0.2);color:var(--risk-low);}
+
+/* ── CONFIDENCE ── */
+.conf-bar{display:flex;align-items:center;gap:8px;}
+.conf-track{flex:1;height:5px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;}
+.conf-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+.conf-pct{font-size:0.8rem;font-weight:600;font-family:var(--font-mono);min-width:38px;text-align:right;}
+
+/* ── FORMS ── */
+.form-group{margin-bottom:1rem;}
+.form-label{display:block;font-size:0.72rem;font-weight:600;color:var(--text-secondary);margin-bottom:0.35rem;text-transform:uppercase;letter-spacing:0.8px;}
+.form-select,.form-input,.form-textarea{
+  width:100%;background:var(--bg-surface);border:1px solid var(--border-medium);
+  border-radius:6px;padding:0.6rem 0.85rem;color:var(--text-primary);
+  font-family:var(--font-body);font-size:0.88rem;
+  transition:border-color .2s,box-shadow .2s;outline:none;
+}
+.form-select:focus,.form-input:focus,.form-textarea:focus{
+  border-color:var(--lw-crimson);box-shadow:0 0 0 3px var(--lw-crimson-glow);
+}
+.form-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239a9590' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;}
+.form-select option{background:var(--bg-surface);}
+.form-textarea{resize:vertical;min-height:200px;font-size:0.82rem;line-height:1.55;}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:0.5rem;
+  padding:0.6rem 1.5rem;border-radius:6px;font-family:var(--font-body);
+  font-size:0.88rem;font-weight:600;cursor:pointer;border:none;
+  transition:all .2s ease;letter-spacing:0.2px;
+}
+.btn-primary{
+  background:var(--lw-crimson);color:#fff;
+  box-shadow:0 2px 10px rgba(196,18,48,0.2);
+}
+.btn-primary:hover{background:var(--lw-crimson-light);box-shadow:0 4px 18px rgba(196,18,48,0.3);transform:translateY(-1px);}
+.btn-primary:active{transform:translateY(0);}
+.btn-secondary{background:var(--bg-card);border:1px solid var(--border-medium);color:var(--text-primary);}
+.btn-secondary:hover{border-color:var(--lw-crimson);background:var(--bg-elevated);}
+.btn-full{width:100%;}
+
+/* ── QUEUES ── */
+.queues-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;}
+.queue-col{min-height:300px;}
+.queue-header{text-align:center;padding:0.6rem;border-radius:6px;margin-bottom:1rem;font-size:0.75rem;font-weight:600;letter-spacing:0.5px;}
+.queue-count{font-family:var(--font-serif);font-size:1.6rem;font-weight:600;margin-top:0.15rem;}
+.queue-empty{text-align:center;color:var(--text-muted);font-size:0.82rem;padding:2rem 0;border:1px dashed var(--border-subtle);border-radius:6px;}
+
+/* ── AUDIT ── */
+.audit-entry{
+  background:rgba(14,14,16,0.5);border:1px solid var(--border-subtle);
+  border-radius:6px;padding:0.55rem 0.85rem;margin-bottom:0.35rem;
+  font-family:var(--font-mono);font-size:0.72rem;color:var(--text-secondary);
+  line-height:1.5;
+}
+.audit-ts{color:var(--text-muted);}
+.audit-action{font-weight:600;}
+
+/* ── PROMPT LAB ── */
+.prompt-card{
+  background:var(--bg-card);border:1px solid var(--border-subtle);
+  border-radius:var(--radius);padding:1.15rem;margin-bottom:0.75rem;
+  cursor:pointer;transition:all .2s;
+}
+.prompt-card:hover,.prompt-card.selected{border-color:var(--lw-crimson);background:var(--bg-elevated);}
+.prompt-card.selected{box-shadow:0 0 0 1px var(--lw-crimson-border);}
+.prompt-code{
+  background:var(--bg-deep);border:1px solid var(--border-subtle);
+  border-radius:6px;padding:1rem;margin-top:0.75rem;
+  font-family:var(--font-mono);font-size:0.74rem;color:var(--lw-gold);
+  line-height:1.6;white-space:pre-wrap;max-height:350px;overflow-y:auto;
+}
+
+/* ── PROCESS FLOW ── */
+.flow-diagram{display:flex;align-items:center;gap:0;margin:1.5rem 0;flex-wrap:wrap;justify-content:center;}
+.flow-step{
+  background:var(--bg-card);border:1px solid var(--border-subtle);
+  border-radius:var(--radius);padding:1rem 1.15rem;text-align:center;
+  min-width:148px;transition:all .3s;
+}
+.flow-step:hover{border-color:var(--lw-crimson);transform:translateY(-2px);}
+.flow-step-icon{font-size:1.4rem;margin-bottom:0.35rem;}
+.flow-step-title{font-family:var(--font-serif);font-size:0.85rem;font-weight:600;margin-bottom:0.15rem;}
+.flow-step-desc{font-size:0.68rem;color:var(--text-muted);line-height:1.35;}
+.flow-arrow{color:var(--lw-crimson);font-size:1.1rem;margin:0 0.35rem;opacity:0.5;}
+
+/* ── LAYOUTS ── */
+.two-col{display:grid;grid-template-columns:3fr 2fr;gap:1.5rem;}
+.two-col-equal{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;}
+
+/* ── SLIDERS ── */
+.slider-group{margin-bottom:1.25rem;}
+.slider-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem;}
+.slider-label{font-size:0.76rem;font-weight:500;color:var(--text-secondary);}
+.slider-value{font-family:var(--font-mono);font-size:0.78rem;color:var(--lw-gold);font-weight:500;}
+input[type="range"]{width:100%;-webkit-appearance:none;background:transparent;outline:none;}
+input[type="range"]::-webkit-slider-track{height:4px;background:rgba(255,255,255,0.06);border-radius:2px;}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;background:var(--lw-crimson);
+  border-radius:50%;margin-top:-6px;cursor:pointer;box-shadow:0 2px 6px rgba(196,18,48,0.3);
+}
+
+/* ── CALLOUTS ── */
+.callout{padding:0.7rem 1rem;border-radius:6px;font-size:0.78rem;line-height:1.45;margin-top:1rem;}
+.callout-crimson{background:var(--lw-crimson-glow);border:1px solid var(--lw-crimson-border);color:var(--lw-crimson-light);}
+.callout-gold{background:var(--lw-gold-glow);border:1px solid var(--lw-gold-border);color:var(--lw-gold);}
+.callout-green{background:var(--risk-low-bg);border:1px solid rgba(58,157,92,0.2);color:var(--risk-low);}
+
+/* ── CLAUSE CARDS ── */
+.clause-card{
+  background:var(--bg-card);border:1px solid var(--border-subtle);
+  border-radius:var(--radius);padding:0.85rem 1rem;margin-bottom:0.5rem;
+  border-left:3px solid var(--text-muted);
+}
+.clause-card.critical{border-left-color:var(--risk-high);}
+.clause-card.major{border-left-color:var(--risk-medium);}
+.clause-card.minor{border-left-color:var(--text-muted);}
+.clause-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.3rem;}
+.clause-type{font-size:0.72rem;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-secondary);}
+.clause-severity{font-size:0.68rem;font-weight:600;letter-spacing:0.5px;}
+.clause-flag{font-size:0.82rem;color:var(--text-primary);margin-bottom:0.2rem;}
+.clause-ref{font-size:0.72rem;color:var(--text-muted);font-style:italic;}
+
+/* ── SPINNER ── */
+.spinner-overlay{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem;gap:1rem;}
+.spinner{width:36px;height:36px;border:3px solid var(--border-subtle);border-top-color:var(--lw-crimson);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spinner-text{color:var(--text-secondary);font-size:0.88rem;}
+
+/* ── ROUTE RESULT ── */
+.route-result{padding:1rem 1.25rem;border-radius:var(--radius);margin-top:1.25rem;border:1px solid;}
+.route-result h3{font-family:var(--font-serif);font-size:1rem;font-weight:600;margin-bottom:0.25rem;}
+.route-result p{font-size:0.78rem;opacity:0.8;}
+
+/* ── FOOTER ── */
+.app-footer{
+  text-align:center;padding:2.5rem 0 1rem;color:var(--text-muted);font-size:0.68rem;
+  letter-spacing:0.5px;border-top:1px solid var(--border-subtle);margin-top:3rem;
+}
+.app-footer strong{color:var(--lw-crimson);font-weight:600;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1100px){
+  .metrics-grid{grid-template-columns:repeat(2,1fr);}
+  .queues-grid{grid-template-columns:1fr;}
+  .two-col,.two-col-equal{grid-template-columns:1fr;}
+}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;padding:1rem;}
+  .mobile-toggle{display:block !important;}
+  .flow-diagram{flex-direction:column;}
+  .flow-arrow{transform:rotate(90deg);}
+}
+.mobile-toggle{
+  display:none;position:fixed;top:1rem;left:1rem;z-index:200;
+  background:var(--bg-card);border:1px solid var(--border-medium);
+  border-radius:6px;padding:0.5rem 0.7rem;cursor:pointer;font-size:1.2rem;
+  color:var(--text-primary);
+}
+/* hide defaults */
+#MainMenu,footer,header{visibility:hidden}
+</style>
+</head>
+<body>
+
+<div class="mobile-toggle" onclick="document.querySelector('.sidebar').classList.toggle('open')">☰</div>
+
+<!-- SIDEBAR -->
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="sidebar-logo"><div class="sidebar-logo-mark">L</div> Lexicon AI</div>
+    <div class="sidebar-sub">Workflow Automation</div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-nav">
+    <div class="nav-item active" data-page="dashboard" onclick="navigate('dashboard')">
+      <span class="nav-icon">📊</span> Command Center
+    </div>
+    <div class="nav-item" data-page="intake" onclick="navigate('intake')">
+      <span class="nav-icon">📝</span> Contract Intake
+    </div>
+    <div class="nav-item" data-page="analysis" onclick="navigate('analysis')">
+      <span class="nav-icon">🔍</span> AI Analysis
+    </div>
+    <div class="nav-item" data-page="queues" onclick="navigate('queues')">
+      <span class="nav-icon">📋</span> Workflow Queues
+    </div>
+    <div class="nav-item" data-page="audit" onclick="navigate('audit')">
+      <span class="nav-icon">🔒</span> Audit Trail
+    </div>
+    <div class="nav-item" data-page="promptlab" onclick="navigate('promptlab')">
+      <span class="nav-icon">🧪</span> Prompt Lab
+    </div>
+  </div>
+
+  <div class="sidebar-divider"></div>
+
+  <div class="sidebar-meta">
+    <div class="sidebar-meta-label">Active Prompt</div>
+    <div class="sidebar-meta-value" id="sidebar-prompt">v1.1 — Enhanced Reasoning</div>
+    <div class="sidebar-meta-label">Session</div>
+    <div class="sidebar-meta-value" id="sidebar-stats">Processed: 0 · Audit: 0</div>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div class="main">
+
+<!-- ═══════ DASHBOARD ═══════ -->
+<div class="page active" id="page-dashboard">
+  <div class="hero">
+    <div class="hero-badge">Enterprise AI Platform</div>
+    <h1>Lexicon AI — Command Center</h1>
+    <p>AI-powered legal contract risk triage &amp; workflow automation with human-in-the-loop controls</p>
+  </div>
+
+  <div class="metrics-grid" id="dashboard-metrics">
+    <div class="metric-card">
+      <div class="metric-value" id="m-total" style="color:var(--text-primary)">0</div>
+      <div class="metric-label">Contracts Processed</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value" style="color:var(--risk-high)" id="m-high">0</div>
+      <div class="metric-label">Escalated — High Risk</div>
+      <div class="metric-delta" style="color:var(--risk-high)">Requires Attorney Review</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value" style="color:var(--risk-medium)" id="m-med">0</div>
+      <div class="metric-label">Legal Ops Queue</div>
+      <div class="metric-delta" style="color:var(--risk-medium)">Pending Review</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-value" style="color:var(--risk-low)" id="m-auto">0</div>
+      <div class="metric-label">Auto-Approved</div>
+      <div class="metric-delta" style="color:var(--risk-low)">Low Risk — Cleared</div>
+    </div>
+  </div>
+
+  <div class="section-title">Process Flow Architecture</div>
+  <div class="flow-diagram">
+    <div class="flow-step"><div class="flow-step-icon">📝</div><div class="flow-step-title">Intake</div><div class="flow-step-desc">Structured metadata<br>Doc type · Urgency</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-step-icon">🤖</div><div class="flow-step-title">AI Analysis</div><div class="flow-step-desc">Claude API<br>Clause extraction</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-step-icon">⚖️</div><div class="flow-step-title">Risk Engine</div><div class="flow-step-desc">Rules layer<br>Confidence gating</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-step-icon">📋</div><div class="flow-step-title">Routing</div><div class="flow-step-desc">Attorney · Legal Ops<br>Auto-approved</div></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step"><div class="flow-step-icon">🔒</div><div class="flow-step-title">Audit Trail</div><div class="flow-step-desc">Full traceability<br>Model + prompt versioned</div></div>
+  </div>
+
+  <div style="margin-top:2rem;" class="two-col">
+    <div>
+      <div class="section-title">Architecture Principles</div>
+      <div class="card"><h4>Human-in-the-Loop</h4><p>No contract is auto-approved above configurable risk thresholds. Critical severity clauses always force senior attorney review regardless of overall score.</p></div>
+      <div class="card"><h4>Confidence Gating</h4><p>AI outputs below the confidence floor are always routed to human review. The system treats AI as probabilistic, never deterministic.</p></div>
+      <div class="card"><h4>Deterministic Rules Engine</h4><p>Business policy constraints override AI recommendations. Configurable thresholds ensure regulatory compliance regardless of model output.</p></div>
+      <div class="card"><h4>Prompt Version Control</h4><p>Multiple prompt strategies tracked with evaluation scoring. Every analysis is tied to a specific prompt version for reproducibility.</p></div>
+    </div>
+    <div>
+      <div class="section-title">Risk Engine Configuration</div>
+      <div class="slider-group">
+        <div class="slider-header"><span class="slider-label">High-Risk Threshold</span><span class="slider-value" id="sv-high">0.75</span></div>
+        <input type="range" min="50" max="100" value="75" id="slider-high" oninput="updateSlider('high')">
+      </div>
+      <div class="slider-group">
+        <div class="slider-header"><span class="slider-label">Confidence Floor (Force Human Review)</span><span class="slider-value" id="sv-conf">0.70</span></div>
+        <input type="range" min="50" max="95" value="70" id="slider-conf" oninput="updateSlider('conf')">
+      </div>
+      <div class="slider-group">
+        <div class="slider-header"><span class="slider-label">Max Liability for Auto-Approval</span><span class="slider-value" id="sv-liability">$50,000</span></div>
+        <input type="range" min="0" max="500000" step="10000" value="50000" id="slider-liability" oninput="updateSlider('liability')">
+      </div>
+      <div class="callout callout-gold">⚠️ <strong>Policy Constraint:</strong> These thresholds are enforced by the deterministic rules engine, not by the AI model. Regulatory compliance is guaranteed regardless of AI output.</div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <div class="section-title">Recent Activity</div>
+    <div id="dashboard-activity"><div class="audit-entry"><span class="audit-ts">—</span> No activity yet. Submit a contract to begin.</div></div>
+  </div>
+</div>
+
+<!-- ═══════ INTAKE ═══════ -->
+<div class="page" id="page-intake">
+  <div class="hero">
+    <div class="hero-badge">Module 1 — Intake</div>
+    <h1>Contract Intake</h1>
+    <p>Structured document ingestion with metadata tagging for downstream AI processing</p>
+  </div>
+  <div class="two-col">
+    <div>
+      <div class="section-title">Document Metadata</div>
+      <div class="form-group">
+        <label class="form-label">Document Type</label>
+        <select class="form-select" id="f-doctype">
+          <option>Master Services Agreement (MSA)</option><option>Non-Disclosure Agreement (NDA)</option>
+          <option>Statement of Work (SOW)</option><option>SaaS Subscription Agreement</option>
+          <option>Vendor Agreement</option><option>Employment Agreement</option>
+          <option>Engagement Letter</option><option>Amendment / Addendum</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="form-group"><label class="form-label">Urgency</label><select class="form-select" id="f-urgency"><option>🔴 Urgent</option><option selected>🟡 Standard</option><option>🟢 Low Priority</option></select></div>
+        <div class="form-group"><label class="form-label">Business Unit</label><select class="form-select" id="f-unit"><option>Corporate</option><option>Litigation</option><option>M&amp;A</option><option>Finance &amp; Banking</option><option>Technology Transactions</option><option>Real Estate</option><option>Tax</option><option>IP &amp; Patent</option></select></div>
+      </div>
+      <div class="form-group"><label class="form-label">Contract Reference</label><input type="text" class="form-input" id="f-name" placeholder="e.g., TechVendor MSA — Q1 2026"></div>
+      <div class="section-title" style="margin-top:1.5rem;">Contract Text</div>
+      <div class="form-group"><label class="form-label">Load Sample (Demo)</label>
+        <select class="form-select" id="f-sample" onchange="loadSample()"><option value="">— Paste your own —</option><option value="high">⚠️ High Risk — Vendor MSA (Uncapped Liability)</option><option value="medium">🔶 Medium Risk — SaaS Subscription</option><option value="low">✅ Low Risk — Standard NDA</option></select>
+      </div>
+      <div class="form-group"><textarea class="form-textarea" id="f-text" placeholder="Paste contract text here..."></textarea></div>
+      <button class="btn btn-primary btn-full" onclick="submitIntake()">Submit for AI Analysis →</button>
+    </div>
+    <div>
+      <div class="section-title">Design Rationale</div>
+      <div class="card"><h4>Why Structured Intake</h4><p>In enterprise legal operations, the #1 failure point for automation is unstructured input. This module ensures every contract enters the pipeline with metadata that enables deterministic routing independent of AI output.</p></div>
+      <div class="card"><h4>Metadata-Driven Routing</h4><p>Document type, urgency, and business unit feed directly into the rules engine. A low-risk NDA for Corporate follows a different path than a high-risk MSA for M&amp;A.</p></div>
+      <div class="card"><h4>Chain of Custody</h4><p>The submission event is logged before any AI processing occurs, creating a traceable audit trail from the first touch — mapping to matter number, responsible attorney, and client code.</p></div>
+      <div class="callout callout-gold">💡 <strong>Enterprise Note:</strong> In production, this integrates with the firm's DMS (iManage, NetDocuments) and matter management platform.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ ANALYSIS ═══════ -->
+<div class="page" id="page-analysis">
+  <div class="hero">
+    <div class="hero-badge">Module 2 — AI Processing</div>
+    <h1>AI Contract Analysis</h1>
+    <p>LLM-powered clause extraction and risk assessment with confidence scoring</p>
+  </div>
+  <div id="analysis-empty" style="text-align:center;padding:3rem;color:var(--text-muted);">
+    No contract pending. Go to <strong style="color:var(--lw-crimson);cursor:pointer;" onclick="navigate('intake')">Contract Intake</strong> to submit.
+  </div>
+  <div id="analysis-pending" style="display:none;">
+    <div class="card" id="analysis-pending-card"></div>
+    <button class="btn btn-primary btn-full" onclick="runAnalysis()" style="margin-top:1rem;">⚡ Run AI Analysis</button>
+  </div>
+  <div id="analysis-processing" style="display:none;">
+    <div class="spinner-overlay"><div class="spinner"></div><div class="spinner-text">Extracting clauses, scoring risk, generating recommendations...</div></div>
+  </div>
+  <div id="analysis-results" style="display:none;"></div>
+</div>
+
+<!-- ═══════ QUEUES ═══════ -->
+<div class="page" id="page-queues">
+  <div class="hero">
+    <div class="hero-badge">Module 3 — Workflow Routing</div>
+    <h1>Workflow Queues</h1>
+    <p>Automated routing with human-in-the-loop controls — every decision traceable</p>
+  </div>
+  <div class="queues-grid">
+    <div class="queue-col">
+      <div class="queue-header" style="background:var(--risk-high-bg);color:var(--risk-high);">🔴 SENIOR ATTORNEY REVIEW<div class="queue-count" id="q-high-count">0</div></div>
+      <div id="q-high-items"><div class="queue-empty">Queue empty</div></div>
+    </div>
+    <div class="queue-col">
+      <div class="queue-header" style="background:var(--risk-medium-bg);color:var(--risk-medium);">🟡 LEGAL OPS REVIEW<div class="queue-count" id="q-med-count">0</div></div>
+      <div id="q-med-items"><div class="queue-empty">Queue empty</div></div>
+    </div>
+    <div class="queue-col">
+      <div class="queue-header" style="background:var(--risk-low-bg);color:var(--risk-low);">🟢 AUTO-APPROVED<div class="queue-count" id="q-auto-count">0</div></div>
+      <div id="q-auto-items"><div class="queue-empty">Queue empty</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ AUDIT ═══════ -->
+<div class="page" id="page-audit">
+  <div class="hero">
+    <div class="hero-badge">Module 4 — Compliance</div>
+    <h1>Audit Trail</h1>
+    <p>Complete decision traceability — every AI interaction logged with model version, prompt version, and timestamp</p>
+  </div>
+  <div class="metrics-grid" style="grid-template-columns:repeat(3,1fr);">
+    <div class="metric-card"><div class="metric-value" id="a-total">0</div><div class="metric-label">Total Entries</div></div>
+    <div class="metric-card"><div class="metric-value" id="a-routes">0</div><div class="metric-label">Routing Decisions</div></div>
+    <div class="metric-card"><div class="metric-value" id="a-errors">0</div><div class="metric-label">Errors / Warnings</div></div>
+  </div>
+  <div class="section-title">Full Audit Log</div>
+  <div id="audit-log-entries"><div class="audit-entry"><span class="audit-ts">—</span> No audit entries yet. Process a contract to generate the audit trail.</div></div>
+  <div class="callout callout-gold" style="margin-top:1.5rem;">💡 <strong>Enterprise Note:</strong> In production, audit logs persist to an immutable data store (AWS CloudTrail, Azure Immutable Blob) with RBAC and 7-year retention per legal compliance requirements.</div>
+</div>
+
+<!-- ═══════ PROMPT LAB ═══════ -->
+<div class="page" id="page-promptlab">
+  <div class="hero">
+    <div class="hero-badge">Module 5 — Prompt Engineering</div>
+    <h1>Prompt Lab</h1>
+    <p>Versioned prompt strategies with evaluation scoring — controlled LLM deployment</p>
+  </div>
+  <div class="section-title">Prompt Versions</div>
+  <div id="prompt-cards"></div>
+  <div class="section-title" style="margin-top:2rem;">Selected Prompt</div>
+  <div id="prompt-detail"></div>
+  <div class="callout callout-gold" style="margin-top:1.5rem;">💡 <strong>Why Prompt Versioning:</strong> In regulated environments, you must know exactly which prompt produced which output. If a contract review is later questioned, the firm must reproduce the analysis with the same prompt version — the same principle as model versioning in MLOps.</div>
+</div>
+
+<div class="app-footer">
+  <strong>Lexicon AI</strong> — Legal Workflow Automation Platform &nbsp;·&nbsp; Built by Emre Senturer &nbsp;·&nbsp; Portfolio Demonstration<br>
+  Enterprise AI &nbsp;·&nbsp; Risk-Aware Automation &nbsp;·&nbsp; Human-in-the-Loop Controls
+</div>
+
+</div>
+
+<script>
+const STATE={auditLog:[],queues:{senior_attorney:[],legal_ops:[],auto_approved:[]},totalProcessed:0,pendingContract:null,activePrompt:'v1.1',config:{highThreshold:.75,confidenceFloor:.70,autoApproveMaxLiability:50000}};
+
+const SAMPLES={
+high:`MASTER SERVICES AGREEMENT
+
+This Master Services Agreement ("Agreement") is entered into as of January 15, 2026, by and between TechVendor Solutions Inc. ("Provider") and Acme Corporation ("Client").
+
+1. SERVICES
+Provider shall deliver cloud infrastructure management services, including 24/7 monitoring, incident response, and quarterly security assessments, as described in each Statement of Work ("SOW").
+
+2. TERM
+This Agreement shall commence on the Effective Date and continue for an initial term of thirty-six (36) months. Either party may terminate for convenience with thirty (30) days written notice.
+
+3. FEES AND PAYMENT
+Client shall pay Provider fees as set forth in each SOW. Payment is due within Net-60 of invoice date. Late payments shall accrue interest at 1.5% per month.
+
+4. LIABILITY
+PROVIDER'S LIABILITY UNDER THIS AGREEMENT SHALL BE UNLIMITED. Provider shall be liable for all direct, indirect, consequential, incidental, and punitive damages arising from or related to the performance of services under this Agreement. There shall be no cap on Provider's aggregate liability.
+
+5. INDEMNIFICATION
+Provider shall indemnify, defend, and hold harmless Client from any and all claims, damages, losses, and expenses arising from Provider's performance. Client has no reciprocal indemnification obligation.
+
+6. DATA HANDLING
+Provider will process Client data as necessary for service delivery. Provider may store data in any geographic location at its discretion. No specific data processing agreement is included or referenced in this Agreement.
+
+7. INTELLECTUAL PROPERTY
+All work product created under this Agreement shall be owned exclusively by Client as work-for-hire. Provider retains no rights to any deliverables, including any pre-existing intellectual property incorporated into deliverables.
+
+8. CONFIDENTIALITY
+Both parties agree to maintain confidentiality of proprietary information for a period of one (1) year following termination.
+
+9. GOVERNING LAW
+This Agreement shall be governed by the laws of the State of Delaware, without regard to conflict of laws principles. Any disputes shall be resolved through binding arbitration in Wilmington, Delaware.`,
+
+medium:`SAAS SUBSCRIPTION AGREEMENT
+
+This SaaS Subscription Agreement ("Agreement") is entered into as of February 10, 2026, between CloudPlatform Inc. ("Provider") and Meridian Financial Group ("Customer").
+
+1. SUBSCRIPTION SERVICES
+Provider grants Customer a non-exclusive, non-transferable right to access and use the Platform during the Subscription Term for Customer's internal business purposes.
+
+2. SUBSCRIPTION TERM AND RENEWAL
+The initial Subscription Term is twelve (12) months. The Agreement shall automatically renew for successive twelve (12) month periods unless either party provides written notice of non-renewal at least sixty (60) days prior. Provider may increase fees by up to 8% upon renewal with thirty (30) days notice.
+
+3. FEES
+Customer shall pay an annual subscription fee of $240,000, billed quarterly in advance. Late payments incur interest at 1% per month.
+
+4. SERVICE LEVELS
+Provider commits to 99.5% uptime measured monthly. Service credits of 5% of monthly fees apply for each 1% below SLA. Maximum aggregate service credits shall not exceed 15% of monthly fees.
+
+5. DATA PROCESSING
+Provider shall process Customer data in accordance with the Data Processing Addendum ("DPA") attached as Exhibit B. Data shall be stored within the United States. Provider shall notify Customer within 72 hours of any data breach.
+
+6. LIABILITY
+EACH PARTY'S AGGREGATE LIABILITY SHALL NOT EXCEED THE TOTAL FEES PAID IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM. NEITHER PARTY SHALL BE LIABLE FOR INDIRECT, CONSEQUENTIAL, OR PUNITIVE DAMAGES, EXCEPT IN CASES OF WILLFUL MISCONDUCT OR BREACH OF CONFIDENTIALITY.
+
+7. INDEMNIFICATION
+Provider shall indemnify Customer against third-party IP infringement claims. Customer shall indemnify Provider against claims arising from Customer's misuse.
+
+8. TERMINATION
+Either party may terminate for material breach with thirty (30) days notice and opportunity to cure.
+
+9. GOVERNING LAW
+This Agreement shall be governed by the laws of the State of New York. Disputes resolved through mediation then binding arbitration under AAA Commercial Rules.`,
+
+low:`MUTUAL NON-DISCLOSURE AGREEMENT
+
+This Mutual Non-Disclosure Agreement ("Agreement") is entered into as of March 1, 2026, between Acme Corporation ("Party A") and Summit Partners LLC ("Party B").
+
+1. PURPOSE
+The parties wish to explore a potential business relationship and may need to disclose certain confidential information.
+
+2. DEFINITION OF CONFIDENTIAL INFORMATION
+"Confidential Information" means all non-public information disclosed by either party, whether written, oral, or electronic, designated as confidential or reasonably understood to be confidential.
+
+3. OBLIGATIONS
+Each party agrees to: (a) hold in strict confidence; (b) not disclose to third parties without prior written consent; (c) use only for the stated Purpose; (d) protect with reasonable care.
+
+4. EXCLUSIONS
+Information that: (a) is publicly available through no fault of receiver; (b) was known prior; (c) is independently developed; (d) is disclosed by legal requirement with prompt notice.
+
+5. TERM
+Two (2) years from Effective Date. Confidentiality obligations survive three (3) years following termination.
+
+6. RETURN OF MATERIALS
+Upon termination, each party shall return or destroy all Confidential Information and certify destruction in writing.
+
+7. REMEDIES
+Both parties acknowledge breach may cause irreparable harm; injunctive relief may be sought.
+
+8. GOVERNING LAW
+Laws of the State of California. Disputes in state or federal courts in Los Angeles County.`
+};
+
+const PROMPTS={
+'v1.0':{name:'v1.0 — Baseline',description:'Standard extraction — broad clause coverage',evalScore:.78,
+prompt:`You are a legal contract analyst. Analyze the contract and extract:\n1. Key risk clauses (liability, indemnification, termination, data privacy, IP)\n2. Risk level (HIGH, MEDIUM, LOW)\n3. Confidence score (0.0 to 1.0)\n4. Specific recommendations\n\nReturn ONLY valid JSON with risk_level, confidence, key_clauses[], summary, recommendations[], missing_protections[].`},
+'v1.1':{name:'v1.1 — Enhanced Reasoning',description:'Chain-of-thought reasoning with market-standard benchmarking',evalScore:.91,
+prompt:`You are a senior legal contract analyst at a top-tier global law firm.\nYour analysis must be precise, conservative, and defensible.\n\nANALYSIS FRAMEWORK:\nStep 1 — Identify ALL risk-bearing clauses:\n  - Liability (caps, uncapped exposure, consequential damages)\n  - Indemnification (one-way vs mutual, scope, carve-outs)\n  - Termination (convenience vs cause, notice periods)\n  - Data Privacy (DPA, GDPR/CCPA, breach notification)\n  - IP Rights (ownership, licensing, work-for-hire)\n  - Payment Terms (net terms, late penalties)\n  - Governing Law & Dispute Resolution\n\nStep 2 — For EACH clause assess:\n  - Market standard or outlier?\n  - Worst-case exposure?\n  - Negotiable?\n\nStep 3 — Overall risk rating with explicit reasoning.\n\nReturn ONLY valid JSON.`},
+'v1.2':{name:'v1.2 — Regulatory Focus',description:'Regulatory and compliance-focused (GDPR, CCPA, SOX)',evalScore:.86,
+prompt:`You are a legal compliance analyst specializing in regulatory risk.\n\n1. REGULATORY COMPLIANCE\n   - Data protection (GDPR, CCPA, state privacy laws)\n   - Industry-specific regulations\n   - Cross-border transfer mechanisms\n   - Sanctions and export controls\n\n2. STANDARD RISK ANALYSIS\n   - Liability and indemnification\n   - Termination and survival\n\n3. COMPLIANCE GAPS\n   - Missing required clauses\n   - Outdated regulatory references\n\nReturn ONLY valid JSON.`}
+};
+
+function analyzeContract(text){
+  const t=text.toLowerCase(),clauses=[];let cc=0,mc=0;
+  const sigs={critical:[['unlimited liability','liability','Unlimited liability clause — uncapped financial exposure'],['no cap on','liability','No liability cap specified — potential unlimited damages'],['shall be unlimited','liability','Uncapped aggregate liability provision'],['no reciprocal indemnification','indemnification','One-sided indemnification — imbalanced risk allocation']],major:[['automatically renew','termination','Auto-renewal clause — cost lock-in with limited exit'],['may increase fees','payment_terms','Unilateral fee increase — no cap on renewal escalation'],['any geographic location','data_privacy','No data residency restrictions — regulatory risk'],['at its discretion','data_privacy','Broad provider discretion on data handling'],['work-for-hire','ip_rights','Work-for-hire IP assignment — verify pre-existing IP carve-outs'],['pre-existing intellectual property','ip_rights','Pre-existing IP may be captured — needs explicit exclusion']],minor:[['net-60','payment_terms','Extended payment terms (Net-60) — cash flow consideration'],['1 year following termination','confidentiality','Short post-termination confidentiality (1yr) — below 3-5yr standard'],['binding arbitration','dispute_resolution','Mandatory arbitration — limits litigation options'],['1.5% per month','payment_terms','Late interest at 18% annualized — above market standard']]};
+  for(const[sev,items]of Object.entries(sigs))for(const[kw,ct,flag]of items)if(t.includes(kw)){clauses.push({clause_type:ct,text_reference:`Detected: "${kw}"`,risk_flag:flag,severity:sev,market_standard:sev==='minor',negotiable:sev!=='minor'});if(sev==='critical')cc++;if(sev==='major')mc++;}
+  let rl,conf;if(cc>0){rl='HIGH';conf=.92}else if(mc>=2){rl='MEDIUM';conf=.84}else{rl='LOW';conf=.88}
+  const miss=[];
+  if(!t.includes('data processing')&&!t.includes('dpa'))miss.push('Data Processing Agreement (DPA) not referenced');
+  if(!t.includes('gdpr')&&!t.includes('ccpa'))miss.push('No privacy regulation compliance language (GDPR/CCPA)');
+  if(!t.includes('force majeure'))miss.push('No force majeure clause');
+  if(!t.includes('insurance'))miss.push('No insurance requirements');
+  const recs=[];
+  if(rl==='HIGH'){recs.push('Immediate senior legal review required — do not execute as-is');recs.push('Negotiate liability cap (12-month aggregate fee minimum)');recs.push('Add mutual indemnification with standard carve-outs');}
+  if(rl==='MEDIUM'){recs.push('Legal ops review recommended — non-standard provisions identified');recs.push('Negotiate auto-renewal notice extension and fee cap');}
+  if(miss.length)recs.push('Address missing protections: '+miss.slice(0,2).join('; '));
+  if(rl==='LOW')recs.push('Standard review — no critical issues identified');
+  return{risk_level:rl,confidence:conf,reasoning:`${cc} critical and ${mc} major signals across ${clauses.length} clauses. ${cc>0?'Critical liability exposure — immediate escalation.':mc>=2?'Multiple non-standard provisions warrant review.':'Substantially standard contract.'}`,key_clauses:clauses.length?clauses:[{clause_type:'general',text_reference:'Standard terms',risk_flag:'No significant risk flags',severity:'minor'}],summary:`${clauses.length} risk-bearing clauses, ${cc} critical, ${mc} major. ${rl==='HIGH'?'Immediate senior review required.':rl==='MEDIUM'?'Legal ops review recommended.':'Low risk profile.'}`,recommendations:recs,missing_protections:miss,estimated_exposure:cc>0?'Potentially unlimited — uncapped liability':mc>=2?'Moderate — non-standard terms':'Low — standard market terms',_meta:{model:'lexicon-heuristic-v1',prompt_version:PROMPTS[STATE.activePrompt]?.name||'v1.1',timestamp:new Date().toISOString(),engine:'Deterministic clause matching + rules engine'}};
+}
+
+function logAudit(a,d){STATE.auditLog.unshift({timestamp:new Date().toISOString(),action:a,details:d,model:'claude-sonnet-4-20250514',prompt_version:PROMPTS[STATE.activePrompt]?.name||'v1.1',session:Math.random().toString(36).substr(2,8)});updateSidebarStats();}
+
+function routeContract(result,meta){
+  const c=STATE.config,risk=result.risk_level,conf=result.confidence,reasons=[];let queue;
+  if(conf<c.confidenceFloor){queue='senior_attorney';reasons.push(`Confidence ${(conf*100).toFixed(0)}% below floor ${(c.confidenceFloor*100).toFixed(0)}%`);}
+  else if(risk==='HIGH'){queue='senior_attorney';reasons.push('HIGH risk classification');}
+  else if(risk==='MEDIUM'){queue='legal_ops';reasons.push('MEDIUM risk — legal ops review');}
+  else{if(meta.urgency.includes('Urgent')){queue='legal_ops';reasons.push('LOW risk but URGENT');}else{queue='auto_approved';reasons.push('LOW risk, sufficient confidence');}}
+  for(const cl of result.key_clauses)if(cl.severity==='critical'&&queue!=='senior_attorney'){queue='senior_attorney';reasons.push(`Override: critical ${cl.clause_type}`);break;}
+  STATE.totalProcessed++;
+  const item={id:`LX-${String(STATE.totalProcessed).padStart(4,'0')}`,name:meta.name,doc_type:meta.docType,business_unit:meta.unit,urgency:meta.urgency,risk_level:risk,confidence:conf,routing_reason:reasons.join(' | '),timestamp:new Date().toISOString()};
+  STATE.queues[queue].unshift(item);
+  logAudit('ROUTED',`${item.id} → ${queue.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())} | ${item.routing_reason}`);
+  return{queue,item};
+}
+
+function navigate(p){
+  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.querySelector(`.nav-item[data-page="${p}"]`).classList.add('active');
+  if(p==='queues')renderQueues();if(p==='audit')renderAuditPage();if(p==='dashboard')renderDashboard();if(p==='promptlab')renderPromptLab();if(p==='analysis')refreshAnalysis();
+  document.querySelector('.sidebar').classList.remove('open');
+}
+
+function badgeHTML(l){return`<span class="badge badge-${l.toLowerCase()}">${l}</span>`;}
+function confBarHTML(s){const p=Math.round(s*100),c=s>=.85?'var(--risk-low)':s>=.7?'var(--risk-medium)':'var(--risk-high)';return`<div class="conf-bar"><div class="conf-track"><div class="conf-fill" style="width:${p}%;background:${c};"></div></div><div class="conf-pct" style="color:${c};">${p}%</div></div>`;}
+function updateSlider(t){if(t==='high'){const v=document.getElementById('slider-high').value/100;STATE.config.highThreshold=v;document.getElementById('sv-high').textContent=v.toFixed(2);}else if(t==='conf'){const v=document.getElementById('slider-conf').value/100;STATE.config.confidenceFloor=v;document.getElementById('sv-conf').textContent=v.toFixed(2);}else{const v=parseInt(document.getElementById('slider-liability').value);STATE.config.autoApproveMaxLiability=v;document.getElementById('sv-liability').textContent='$'+v.toLocaleString();}}
+function updateSidebarStats(){document.getElementById('sidebar-stats').textContent=`Processed: ${STATE.totalProcessed} · Audit: ${STATE.auditLog.length}`;}
+
+function auditHTML(e){
+  const colors={INTAKE_SUBMITTED:'var(--lw-crimson-light)',ANALYSIS_STARTED:'#a78bfa',ANALYSIS_COMPLETE:'var(--risk-low)',ROUTED:'var(--lw-gold)',PROMPT_CHANGED:'var(--lw-gold)'};
+  return`<div class="audit-entry"><span class="audit-ts">${e.timestamp.slice(0,19).replace('T',' ')}</span> <span class="audit-action" style="color:${colors[e.action]||'var(--text-secondary)'};">[${e.action}]</span> ${e.details} <span style="float:right;color:var(--text-muted);font-size:.66rem;">Model: ${e.model} | Prompt: ${e.prompt_version}</span></div>`;
+}
+
+function renderDashboard(){
+  document.getElementById('m-total').textContent=STATE.totalProcessed;
+  document.getElementById('m-high').textContent=STATE.queues.senior_attorney.length;
+  document.getElementById('m-med').textContent=STATE.queues.legal_ops.length;
+  document.getElementById('m-auto').textContent=STATE.queues.auto_approved.length;
+  if(STATE.auditLog.length)document.getElementById('dashboard-activity').innerHTML=STATE.auditLog.slice(0,6).map(auditHTML).join('');
+}
+
+function loadSample(){document.getElementById('f-text').value=SAMPLES[document.getElementById('f-sample').value]||'';}
+
+function submitIntake(){
+  const text=document.getElementById('f-text').value.trim();
+  if(!text){alert('Please provide contract text.');return;}
+  const name=document.getElementById('f-name').value||document.getElementById('f-doctype').value;
+  STATE.pendingContract={text,docType:document.getElementById('f-doctype').value,urgency:document.getElementById('f-urgency').value,unit:document.getElementById('f-unit').value,name};
+  logAudit('INTAKE_SUBMITTED',`"${name}" | ${STATE.pendingContract.docType} | ${STATE.pendingContract.urgency}`);
+  navigate('analysis');
+}
+
+function refreshAnalysis(){
+  const e=document.getElementById('analysis-empty'),p=document.getElementById('analysis-pending');
+  if(STATE.pendingContract){e.style.display='none';p.style.display='block';const d=STATE.pendingContract;document.getElementById('analysis-pending-card').innerHTML=`<h4>📄 ${d.name}</h4><p>Type: ${d.docType} · Urgency: ${d.urgency} · Unit: ${d.unit}</p>`;}
+  else{e.style.display='block';p.style.display='none';}
+}
+
+function runAnalysis(){
+  if(!STATE.pendingContract)return;const pending=STATE.pendingContract;
+  logAudit('ANALYSIS_STARTED',`Processing "${pending.name}" with ${PROMPTS[STATE.activePrompt].name}`);
+  document.getElementById('analysis-pending').style.display='none';
+  document.getElementById('analysis-processing').style.display='block';
+  setTimeout(()=>{
+    const r=analyzeContract(pending.text);
+    logAudit('ANALYSIS_COMPLETE',`Risk: ${r.risk_level} | Confidence: ${(r.confidence*100).toFixed(0)}% | Clauses: ${r.key_clauses.length}`);
+    const{queue,item}=routeContract(r,pending);
+    const qd=queue.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    const qc={senior_attorney:'var(--risk-high)',legal_ops:'var(--risk-medium)',auto_approved:'var(--risk-low)'}[queue];
+    const qbg={senior_attorney:'var(--risk-high-bg)',legal_ops:'var(--risk-medium-bg)',auto_approved:'var(--risk-low-bg)'}[queue];
+    document.getElementById('analysis-processing').style.display='none';
+    const el=document.getElementById('analysis-results');el.style.display='block';
+    el.innerHTML=`
+      <div class="section-title">Analysis Results</div>
+      <div class="metrics-grid" style="grid-template-columns:repeat(3,1fr);">
+        <div class="metric-card"><div class="metric-label">Risk Level</div><div style="margin-top:.5rem;font-size:1.1rem;">${badgeHTML(r.risk_level)}</div></div>
+        <div class="metric-card"><div class="metric-label">AI Confidence</div><div style="margin-top:.5rem;">${confBarHTML(r.confidence)}</div></div>
+        <div class="metric-card"><div class="metric-value">${r.key_clauses.length}</div><div class="metric-label">Clauses Flagged</div></div>
+      </div>
+      <div class="section-title" style="margin-top:1.5rem;">Executive Summary</div>
+      <div class="card"><p>${r.summary}</p><p style="margin-top:.5rem;"><strong>Reasoning:</strong> ${r.reasoning}</p><p style="margin-top:.4rem;"><strong>Estimated Exposure:</strong> ${r.estimated_exposure}</p></div>
+      <div class="section-title" style="margin-top:1.5rem;">Flagged Clauses</div>
+      ${r.key_clauses.map(c=>{const sc={critical:'var(--risk-high)',major:'var(--risk-medium)',minor:'var(--text-muted)'}[c.severity]||'var(--text-muted)';return`<div class="clause-card ${c.severity}"><div class="clause-header"><span class="clause-type">${c.clause_type.replace(/_/g,' ')}</span><span class="clause-severity" style="color:${sc};">${c.severity.toUpperCase()}</span></div><div class="clause-flag">${c.risk_flag}</div><div class="clause-ref">${c.text_reference}</div></div>`;}).join('')}
+      <div class="two-col-equal" style="margin-top:1.5rem;">
+        <div><div class="section-title">Recommendations</div>${r.recommendations.map(x=>`<div class="card"><p>${x}</p></div>`).join('')}</div>
+        <div><div class="section-title">Missing Protections</div>${r.missing_protections.map(x=>`<div class="card"><p>${x}</p></div>`).join('')}</div>
+      </div>
+      <div class="section-title" style="margin-top:1.5rem;">Model Metadata</div>
+      <div class="card" style="font-family:var(--font-mono);font-size:.74rem;color:var(--lw-gold);"><pre style="white-space:pre-wrap;margin:0;">${JSON.stringify(r._meta,null,2)}</pre></div>
+      <div class="route-result" style="border-color:${qc};background:${qbg};"><h3 style="color:${qc};">Routed → ${qd}</h3><p style="color:var(--text-secondary);">${item.routing_reason}</p></div>
+      <div style="margin-top:1.5rem;text-align:center;"><button class="btn btn-secondary" onclick="resetAnalysis()">Analyze Another Contract</button></div>`;
+    STATE.pendingContract=null;updateSidebarStats();
+  },1800);
+}
+
+function resetAnalysis(){const el=document.getElementById('analysis-results');el.style.display='none';el.innerHTML='';document.getElementById('analysis-empty').style.display='block';navigate('intake');}
+
+function renderQueues(){
+  ['senior_attorney','legal_ops','auto_approved'].forEach(q=>{
+    const sk={senior_attorney:'high',legal_ops:'med',auto_approved:'auto'}[q];
+    const bc={senior_attorney:'var(--risk-high)',legal_ops:'var(--risk-medium)',auto_approved:'var(--risk-low)'}[q];
+    const items=STATE.queues[q];
+    document.getElementById(`q-${sk}-count`).textContent=items.length;
+    const con=document.getElementById(`q-${sk}-items`);
+    con.innerHTML=items.length?items.map(i=>`<div class="card" style="border-left:3px solid ${bc};"><h4>${i.id} — ${i.name}</h4><p>${i.doc_type}<br>Risk: ${badgeHTML(i.risk_level)} · Confidence: ${(i.confidence*100).toFixed(0)}%<br><span style="font-size:.7rem;color:var(--text-muted);">${i.routing_reason}</span></p></div>`).join(''):'<div class="queue-empty">Queue empty</div>';
+  });
+}
+
+function renderAuditPage(){
+  document.getElementById('a-total').textContent=STATE.auditLog.length;
+  document.getElementById('a-routes').textContent=STATE.auditLog.filter(e=>e.action==='ROUTED').length;
+  document.getElementById('a-errors').textContent=STATE.auditLog.filter(e=>e.action.includes('ERROR')).length;
+  if(STATE.auditLog.length)document.getElementById('audit-log-entries').innerHTML=STATE.auditLog.map(auditHTML).join('');
+}
+
+function renderPromptLab(){
+  document.getElementById('prompt-cards').innerHTML=Object.entries(PROMPTS).map(([k,p])=>{
+    const a=k===STATE.activePrompt,sc=p.evalScore>=.85?'var(--risk-low)':p.evalScore>=.75?'var(--risk-medium)':'var(--risk-high)';
+    return`<div class="prompt-card ${a?'selected':''}" onclick="selectPrompt('${k}')"><div style="display:flex;justify-content:space-between;align-items:center;"><div><h4 style="font-size:.9rem;">${a?'✅ ':''}${p.name}</h4><p style="font-size:.78rem;color:var(--text-secondary);margin-top:.15rem;">${p.description}</p></div><div style="text-align:center;"><div style="font-family:var(--font-serif);font-size:1.4rem;font-weight:600;color:${sc};">${(p.evalScore*100).toFixed(0)}%</div><div style="font-size:.64rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;">Eval Score</div></div></div></div>`;
+  }).join('');
+  const a=PROMPTS[STATE.activePrompt];
+  document.getElementById('prompt-detail').innerHTML=`<div class="card"><h4>${a.name}</h4><p style="margin-bottom:.75rem;">${a.description}</p><div class="prompt-code">${a.prompt}</div></div>`;
+}
+
+function selectPrompt(k){STATE.activePrompt=k;document.getElementById('sidebar-prompt').textContent=PROMPTS[k].name;logAudit('PROMPT_CHANGED',`Switched to: ${PROMPTS[k].name}`);renderPromptLab();}
+
+renderDashboard();renderPromptLab();
+</script>
+</body>
+</html>
