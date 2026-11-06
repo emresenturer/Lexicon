@@ -1,14 +1,14 @@
-# Lexicon — Legal Workflow Automation
+# Lexicon: Legal Workflow Automation
 
 AI-powered legal contract risk triage and workflow automation with human-in-the-loop controls.
 
 ## What it does
 
-- **Contract intake** — bring a contract into the pipeline
-- **AI contract analysis** — clause-level risk scoring and flagging
-- **Workflow queues** — route flagged items to a human reviewer before anything is finalized
-- **Audit trail** — every decision logged and traceable
-- **Prompt lab** — tune the analysis prompts without touching code
+- **Contract intake**: bring a contract into the pipeline
+- **Contract analysis**: clause-level risk scoring and flagging
+- **Workflow queues**: route flagged items to a human reviewer before anything is finalized
+- **Audit trail**: every decision logged and traceable
+- **Prompt lab**: tune the analysis prompts without touching code
 
 ## Live demo
 
@@ -20,7 +20,7 @@ This is a portfolio demonstration. Clause scoring runs on a built-in rule engine
 
 ## Run it locally
 
-The app is a single self-contained page — no build step, no dependencies:
+The app is a single self-contained page: no build step, no dependencies:
 
 ```bash
 # from the repo root
