@@ -12,7 +12,9 @@ AI-powered legal contract risk triage and workflow automation with human-in-the-
 
 ## Live demo
 
-[ai-lexicon.netlify.app](https://ai-lexicon.netlify.app/)
+[emresenturer.github.io/Lexicon](https://emresenturer.github.io/Lexicon/) (GitHub Pages, deployed from this repo)
+
+Mirror: [ai-lexicon.netlify.app](https://ai-lexicon.netlify.app/)
 
 ## How the analysis works
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Lexicon AI — Legal Workflow Automation Platform</title>
+<title>Lexicon AI · Legal Workflow Automation Platform</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚖️</text></svg>">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -357,7 +357,7 @@ input[type="range"]::-webkit-slider-thumb{
 
   <div class="sidebar-meta">
     <div class="sidebar-meta-label">Active Prompt</div>
-    <div class="sidebar-meta-value" id="sidebar-prompt">v1.1 — Enhanced Reasoning</div>
+    <div class="sidebar-meta-value" id="sidebar-prompt">v1.1 · Enhanced Reasoning</div>
     <div class="sidebar-meta-label">Session</div>
     <div class="sidebar-meta-value" id="sidebar-stats">Processed: 0 · Audit: 0</div>
   </div>
@@ -370,7 +370,7 @@ input[type="range"]::-webkit-slider-thumb{
 <div class="page active" id="page-dashboard">
   <div class="hero">
     <div class="hero-badge">Enterprise AI Platform</div>
-    <h1>Lexicon AI — Command Center</h1>
+    <h1>Lexicon AI · Command Center</h1>
     <p>AI-powered legal contract risk triage &amp; workflow automation with human-in-the-loop controls</p>
   </div>
 
@@ -381,7 +381,7 @@ input[type="range"]::-webkit-slider-thumb{
     </div>
     <div class="metric-card">
       <div class="metric-value" style="color:var(--risk-high)" id="m-high">0</div>
-      <div class="metric-label">Escalated — High Risk</div>
+      <div class="metric-label">Escalated · High Risk</div>
       <div class="metric-delta" style="color:var(--risk-high)">Requires Attorney Review</div>
     </div>
     <div class="metric-card">
@@ -392,7 +392,7 @@ input[type="range"]::-webkit-slider-thumb{
     <div class="metric-card">
       <div class="metric-value" style="color:var(--risk-low)" id="m-auto">0</div>
       <div class="metric-label">Auto-Approved</div>
-      <div class="metric-delta" style="color:var(--risk-low)">Low Risk — Cleared</div>
+      <div class="metric-delta" style="color:var(--risk-low)">Low Risk · Cleared</div>
     </div>
   </div>
 
@@ -437,14 +437,14 @@ input[type="range"]::-webkit-slider-thumb{
 
   <div style="margin-top:2rem;">
     <div class="section-title">Recent Activity</div>
-    <div id="dashboard-activity"><div class="audit-entry"><span class="audit-ts">—</span> No activity yet. Submit a contract to begin.</div></div>
+    <div id="dashboard-activity"><div class="audit-entry"><span class="audit-ts">-</span> No activity yet. Submit a contract to begin.</div></div>
   </div>
 </div>
 
 <!-- ═══════ INTAKE ═══════ -->
 <div class="page" id="page-intake">
   <div class="hero">
-    <div class="hero-badge">Module 1 — Intake</div>
+    <div class="hero-badge">Module 1 · Intake</div>
     <h1>Contract Intake</h1>
     <p>Structured document ingestion with metadata tagging for downstream AI processing</p>
   </div>
@@ -464,10 +464,10 @@ input[type="range"]::-webkit-slider-thumb{
         <div class="form-group"><label class="form-label">Urgency</label><select class="form-select" id="f-urgency"><option>🔴 Urgent</option><option selected>🟡 Standard</option><option>🟢 Low Priority</option></select></div>
         <div class="form-group"><label class="form-label">Business Unit</label><select class="form-select" id="f-unit"><option>Corporate</option><option>Litigation</option><option>M&amp;A</option><option>Finance &amp; Banking</option><option>Technology Transactions</option><option>Real Estate</option><option>Tax</option><option>IP &amp; Patent</option></select></div>
       </div>
-      <div class="form-group"><label class="form-label">Contract Reference</label><input type="text" class="form-input" id="f-name" placeholder="e.g., TechVendor MSA — Q1 2026"></div>
+      <div class="form-group"><label class="form-label">Contract Reference</label><input type="text" class="form-input" id="f-name" placeholder="e.g., TechVendor MSA · Q1 2026"></div>
       <div class="section-title" style="margin-top:1.5rem;">Contract Text</div>
       <div class="form-group"><label class="form-label">Load Sample (Demo)</label>
-        <select class="form-select" id="f-sample" onchange="loadSample()"><option value="">— Paste your own —</option><option value="high">⚠️ High Risk — Vendor MSA (Uncapped Liability)</option><option value="medium">🔶 Medium Risk — SaaS Subscription</option><option value="low">✅ Low Risk — Standard NDA</option></select>
+        <select class="form-select" id="f-sample" onchange="loadSample()"><option value="">Paste your own</option><option value="high">⚠️ High Risk: Vendor MSA (Uncapped Liability)</option><option value="medium">🔶 Medium Risk: SaaS Subscription</option><option value="low">✅ Low Risk: Standard NDA</option></select>
       </div>
       <div class="form-group"><textarea class="form-textarea" id="f-text" placeholder="Paste contract text here..."></textarea></div>
       <button class="btn btn-primary btn-full" onclick="submitIntake()">Submit for AI Analysis →</button>
@@ -476,7 +476,7 @@ input[type="range"]::-webkit-slider-thumb{
       <div class="section-title">Design Rationale</div>
       <div class="card"><h4>Why Structured Intake</h4><p>In enterprise legal operations, the #1 failure point for automation is unstructured input. This module ensures every contract enters the pipeline with metadata that enables deterministic routing independent of AI output.</p></div>
       <div class="card"><h4>Metadata-Driven Routing</h4><p>Document type, urgency, and business unit feed directly into the rules engine. A low-risk NDA for Corporate follows a different path than a high-risk MSA for M&amp;A.</p></div>
-      <div class="card"><h4>Chain of Custody</h4><p>The submission event is logged before any AI processing occurs, creating a traceable audit trail from the first touch — mapping to matter number, responsible attorney, and client code.</p></div>
+      <div class="card"><h4>Chain of Custody</h4><p>The submission event is logged before any AI processing occurs, creating a traceable audit trail from the first touch: mapping to matter number, responsible attorney, and client code.</p></div>
       <div class="callout callout-gold">💡 <strong>Enterprise Note:</strong> In production, this integrates with the firm's DMS (iManage, NetDocuments) and matter management platform.</div>
     </div>
   </div>
@@ -485,7 +485,7 @@ input[type="range"]::-webkit-slider-thumb{
 <!-- ═══════ ANALYSIS ═══════ -->
 <div class="page" id="page-analysis">
   <div class="hero">
-    <div class="hero-badge">Module 2 — AI Processing</div>
+    <div class="hero-badge">Module 2 · AI Processing</div>
     <h1>AI Contract Analysis</h1>
     <p>LLM-powered clause extraction and risk assessment with confidence scoring</p>
   </div>
@@ -505,9 +505,9 @@ input[type="range"]::-webkit-slider-thumb{
 <!-- ═══════ QUEUES ═══════ -->
 <div class="page" id="page-queues">
   <div class="hero">
-    <div class="hero-badge">Module 3 — Workflow Routing</div>
+    <div class="hero-badge">Module 3 · Workflow Routing</div>
     <h1>Workflow Queues</h1>
-    <p>Automated routing with human-in-the-loop controls — every decision traceable</p>
+    <p>Automated routing with human-in-the-loop controls: every decision traceable</p>
   </div>
   <div class="queues-grid">
     <div class="queue-col">
@@ -528,9 +528,9 @@ input[type="range"]::-webkit-slider-thumb{
 <!-- ═══════ AUDIT ═══════ -->
 <div class="page" id="page-audit">
   <div class="hero">
-    <div class="hero-badge">Module 4 — Compliance</div>
+    <div class="hero-badge">Module 4 · Compliance</div>
     <h1>Audit Trail</h1>
-    <p>Complete decision traceability — every AI interaction logged with model version, prompt version, and timestamp</p>
+    <p>Complete decision traceability: every AI interaction logged with model version, prompt version, and timestamp</p>
   </div>
   <div class="metrics-grid" style="grid-template-columns:repeat(3,1fr);">
     <div class="metric-card"><div class="metric-value" id="a-total">0</div><div class="metric-label">Total Entries</div></div>
@@ -538,26 +538,26 @@ input[type="range"]::-webkit-slider-thumb{
     <div class="metric-card"><div class="metric-value" id="a-errors">0</div><div class="metric-label">Errors / Warnings</div></div>
   </div>
   <div class="section-title">Full Audit Log</div>
-  <div id="audit-log-entries"><div class="audit-entry"><span class="audit-ts">—</span> No audit entries yet. Process a contract to generate the audit trail.</div></div>
+  <div id="audit-log-entries"><div class="audit-entry"><span class="audit-ts">-</span> No audit entries yet. Process a contract to generate the audit trail.</div></div>
   <div class="callout callout-gold" style="margin-top:1.5rem;">💡 <strong>Enterprise Note:</strong> In production, audit logs persist to an immutable data store (AWS CloudTrail, Azure Immutable Blob) with RBAC and 7-year retention per legal compliance requirements.</div>
 </div>
 
 <!-- ═══════ PROMPT LAB ═══════ -->
 <div class="page" id="page-promptlab">
   <div class="hero">
-    <div class="hero-badge">Module 5 — Prompt Engineering</div>
+    <div class="hero-badge">Module 5 · Prompt Engineering</div>
     <h1>Prompt Lab</h1>
-    <p>Versioned prompt strategies with evaluation scoring — controlled LLM deployment</p>
+    <p>Versioned prompt strategies with evaluation scoring: controlled LLM deployment</p>
   </div>
   <div class="section-title">Prompt Versions</div>
   <div id="prompt-cards"></div>
   <div class="section-title" style="margin-top:2rem;">Selected Prompt</div>
   <div id="prompt-detail"></div>
-  <div class="callout callout-gold" style="margin-top:1.5rem;">💡 <strong>Why Prompt Versioning:</strong> In regulated environments, you must know exactly which prompt produced which output. If a contract review is later questioned, the firm must reproduce the analysis with the same prompt version — the same principle as model versioning in MLOps.</div>
+  <div class="callout callout-gold" style="margin-top:1.5rem;">💡 <strong>Why Prompt Versioning:</strong> In regulated environments, you must know exactly which prompt produced which output. If a contract review is later questioned, the firm must reproduce the analysis with the same prompt version: the same principle as model versioning in MLOps.</div>
 </div>
 
 <div class="app-footer">
-  <strong>Lexicon AI</strong> — Legal Workflow Automation Platform &nbsp;·&nbsp; Built by Emre Senturer &nbsp;·&nbsp; Portfolio Demonstration<br>
+  <strong>Lexicon AI</strong> · Legal Workflow Automation Platform &nbsp;·&nbsp; Built by Emre Senturer &nbsp;·&nbsp; Portfolio Demonstration<br>
   Enterprise AI &nbsp;·&nbsp; Risk-Aware Automation &nbsp;·&nbsp; Human-in-the-Loop Controls
 </div>
 
@@ -659,17 +659,17 @@ Laws of the State of California. Disputes in state or federal courts in Los Ange
 };
 
 const PROMPTS={
-'v1.0':{name:'v1.0 — Baseline',description:'Standard extraction — broad clause coverage',evalScore:.78,
+'v1.0':{name:'v1.0 · Baseline',description:'Standard extraction: broad clause coverage',evalScore:.78,
 prompt:`You are a legal contract analyst. Analyze the contract and extract:\n1. Key risk clauses (liability, indemnification, termination, data privacy, IP)\n2. Risk level (HIGH, MEDIUM, LOW)\n3. Confidence score (0.0 to 1.0)\n4. Specific recommendations\n\nReturn ONLY valid JSON with risk_level, confidence, key_clauses[], summary, recommendations[], missing_protections[].`},
-'v1.1':{name:'v1.1 — Enhanced Reasoning',description:'Chain-of-thought reasoning with market-standard benchmarking',evalScore:.91,
-prompt:`You are a senior legal contract analyst at a top-tier global law firm.\nYour analysis must be precise, conservative, and defensible.\n\nANALYSIS FRAMEWORK:\nStep 1 — Identify ALL risk-bearing clauses:\n  - Liability (caps, uncapped exposure, consequential damages)\n  - Indemnification (one-way vs mutual, scope, carve-outs)\n  - Termination (convenience vs cause, notice periods)\n  - Data Privacy (DPA, GDPR/CCPA, breach notification)\n  - IP Rights (ownership, licensing, work-for-hire)\n  - Payment Terms (net terms, late penalties)\n  - Governing Law & Dispute Resolution\n\nStep 2 — For EACH clause assess:\n  - Market standard or outlier?\n  - Worst-case exposure?\n  - Negotiable?\n\nStep 3 — Overall risk rating with explicit reasoning.\n\nReturn ONLY valid JSON.`},
-'v1.2':{name:'v1.2 — Regulatory Focus',description:'Regulatory and compliance-focused (GDPR, CCPA, SOX)',evalScore:.86,
+'v1.1':{name:'v1.1 · Enhanced Reasoning',description:'Chain-of-thought reasoning with market-standard benchmarking',evalScore:.91,
+prompt:`You are a senior legal contract analyst at a top-tier global law firm.\nYour analysis must be precise, conservative, and defensible.\n\nANALYSIS FRAMEWORK:\nStep 1: Identify ALL risk-bearing clauses:\n  - Liability (caps, uncapped exposure, consequential damages)\n  - Indemnification (one-way vs mutual, scope, carve-outs)\n  - Termination (convenience vs cause, notice periods)\n  - Data Privacy (DPA, GDPR/CCPA, breach notification)\n  - IP Rights (ownership, licensing, work-for-hire)\n  - Payment Terms (net terms, late penalties)\n  - Governing Law & Dispute Resolution\n\nStep 2: For EACH clause assess:\n  - Market standard or outlier?\n  - Worst-case exposure?\n  - Negotiable?\n\nStep 3: Overall risk rating with explicit reasoning.\n\nReturn ONLY valid JSON.`},
+'v1.2':{name:'v1.2 · Regulatory Focus',description:'Regulatory and compliance-focused (GDPR, CCPA, SOX)',evalScore:.86,
 prompt:`You are a legal compliance analyst specializing in regulatory risk.\n\n1. REGULATORY COMPLIANCE\n   - Data protection (GDPR, CCPA, state privacy laws)\n   - Industry-specific regulations\n   - Cross-border transfer mechanisms\n   - Sanctions and export controls\n\n2. STANDARD RISK ANALYSIS\n   - Liability and indemnification\n   - Termination and survival\n\n3. COMPLIANCE GAPS\n   - Missing required clauses\n   - Outdated regulatory references\n\nReturn ONLY valid JSON.`}
 };
 
 function analyzeContract(text){
   const t=text.toLowerCase(),clauses=[];let cc=0,mc=0;
-  const sigs={critical:[['unlimited liability','liability','Unlimited liability clause — uncapped financial exposure'],['no cap on','liability','No liability cap specified — potential unlimited damages'],['shall be unlimited','liability','Uncapped aggregate liability provision'],['no reciprocal indemnification','indemnification','One-sided indemnification — imbalanced risk allocation']],major:[['automatically renew','termination','Auto-renewal clause — cost lock-in with limited exit'],['may increase fees','payment_terms','Unilateral fee increase — no cap on renewal escalation'],['any geographic location','data_privacy','No data residency restrictions — regulatory risk'],['at its discretion','data_privacy','Broad provider discretion on data handling'],['work-for-hire','ip_rights','Work-for-hire IP assignment — verify pre-existing IP carve-outs'],['pre-existing intellectual property','ip_rights','Pre-existing IP may be captured — needs explicit exclusion']],minor:[['net-60','payment_terms','Extended payment terms (Net-60) — cash flow consideration'],['1 year following termination','confidentiality','Short post-termination confidentiality (1yr) — below 3-5yr standard'],['binding arbitration','dispute_resolution','Mandatory arbitration — limits litigation options'],['1.5% per month','payment_terms','Late interest at 18% annualized — above market standard']]};
+  const sigs={critical:[['unlimited liability','liability','Unlimited liability clause: uncapped financial exposure'],['no cap on','liability','No liability cap specified: potential unlimited damages'],['shall be unlimited','liability','Uncapped aggregate liability provision'],['no reciprocal indemnification','indemnification','One-sided indemnification: imbalanced risk allocation']],major:[['automatically renew','termination','Auto-renewal clause: cost lock-in with limited exit'],['may increase fees','payment_terms','Unilateral fee increase: no cap on renewal escalation'],['any geographic location','data_privacy','No data residency restrictions: regulatory risk'],['at its discretion','data_privacy','Broad provider discretion on data handling'],['work-for-hire','ip_rights','Work-for-hire IP assignment: verify pre-existing IP carve-outs'],['pre-existing intellectual property','ip_rights','Pre-existing IP may be captured: needs explicit exclusion']],minor:[['net-60','payment_terms','Extended payment terms (Net-60): cash flow consideration'],['1 year following termination','confidentiality','Short post-termination confidentiality (1yr): below 3-5yr standard'],['binding arbitration','dispute_resolution','Mandatory arbitration: limits litigation options'],['1.5% per month','payment_terms','Late interest at 18% annualized: above market standard']]};
   for(const[sev,items]of Object.entries(sigs))for(const[kw,ct,flag]of items)if(t.includes(kw)){clauses.push({clause_type:ct,text_reference:`Detected: "${kw}"`,risk_flag:flag,severity:sev,market_standard:sev==='minor',negotiable:sev!=='minor'});if(sev==='critical')cc++;if(sev==='major')mc++;}
   let rl,conf;if(cc>0){rl='HIGH';conf=.92}else if(mc>=2){rl='MEDIUM';conf=.84}else{rl='LOW';conf=.88}
   const miss=[];
@@ -678,11 +678,11 @@ function analyzeContract(text){
   if(!t.includes('force majeure'))miss.push('No force majeure clause');
   if(!t.includes('insurance'))miss.push('No insurance requirements');
   const recs=[];
-  if(rl==='HIGH'){recs.push('Immediate senior legal review required — do not execute as-is');recs.push('Negotiate liability cap (12-month aggregate fee minimum)');recs.push('Add mutual indemnification with standard carve-outs');}
-  if(rl==='MEDIUM'){recs.push('Legal ops review recommended — non-standard provisions identified');recs.push('Negotiate auto-renewal notice extension and fee cap');}
+  if(rl==='HIGH'){recs.push('Immediate senior legal review required: do not execute as-is');recs.push('Negotiate liability cap (12-month aggregate fee minimum)');recs.push('Add mutual indemnification with standard carve-outs');}
+  if(rl==='MEDIUM'){recs.push('Legal ops review recommended: non-standard provisions identified');recs.push('Negotiate auto-renewal notice extension and fee cap');}
   if(miss.length)recs.push('Address missing protections: '+miss.slice(0,2).join('; '));
-  if(rl==='LOW')recs.push('Standard review — no critical issues identified');
-  return{risk_level:rl,confidence:conf,reasoning:`${cc} critical and ${mc} major signals across ${clauses.length} clauses. ${cc>0?'Critical liability exposure — immediate escalation.':mc>=2?'Multiple non-standard provisions warrant review.':'Substantially standard contract.'}`,key_clauses:clauses.length?clauses:[{clause_type:'general',text_reference:'Standard terms',risk_flag:'No significant risk flags',severity:'minor'}],summary:`${clauses.length} risk-bearing clauses, ${cc} critical, ${mc} major. ${rl==='HIGH'?'Immediate senior review required.':rl==='MEDIUM'?'Legal ops review recommended.':'Low risk profile.'}`,recommendations:recs,missing_protections:miss,estimated_exposure:cc>0?'Potentially unlimited — uncapped liability':mc>=2?'Moderate — non-standard terms':'Low — standard market terms',_meta:{model:'lexicon-heuristic-v1',prompt_version:PROMPTS[STATE.activePrompt]?.name||'v1.1',timestamp:new Date().toISOString(),engine:'Deterministic clause matching + rules engine'}};
+  if(rl==='LOW')recs.push('Standard review: no critical issues identified');
+  return{risk_level:rl,confidence:conf,reasoning:`${cc} critical and ${mc} major signals across ${clauses.length} clauses. ${cc>0?'Critical liability exposure: immediate escalation.':mc>=2?'Multiple non-standard provisions warrant review.':'Substantially standard contract.'}`,key_clauses:clauses.length?clauses:[{clause_type:'general',text_reference:'Standard terms',risk_flag:'No significant risk flags',severity:'minor'}],summary:`${clauses.length} risk-bearing clauses, ${cc} critical, ${mc} major. ${rl==='HIGH'?'Immediate senior review required.':rl==='MEDIUM'?'Legal ops review recommended.':'Low risk profile.'}`,recommendations:recs,missing_protections:miss,estimated_exposure:cc>0?'Potentially unlimited: uncapped liability':mc>=2?'Moderate: non-standard terms':'Low: standard market terms',_meta:{model:'lexicon-heuristic-v1',prompt_version:PROMPTS[STATE.activePrompt]?.name||'v1.1',timestamp:new Date().toISOString(),engine:'Deterministic clause matching + rules engine'}};
 }
 
 function logAudit(a,d){STATE.auditLog.unshift({timestamp:new Date().toISOString(),action:a,details:d,model:'lexicon-heuristic-v1',prompt_version:PROMPTS[STATE.activePrompt]?.name||'v1.1',session:Math.random().toString(36).substr(2,8)});updateSidebarStats();}
@@ -691,7 +691,7 @@ function routeContract(result,meta){
   const c=STATE.config,risk=result.risk_level,conf=result.confidence,reasons=[];let queue;
   if(conf<c.confidenceFloor){queue='senior_attorney';reasons.push(`Confidence ${(conf*100).toFixed(0)}% below floor ${(c.confidenceFloor*100).toFixed(0)}%`);}
   else if(risk==='HIGH'){queue='senior_attorney';reasons.push('HIGH risk classification');}
-  else if(risk==='MEDIUM'){queue='legal_ops';reasons.push('MEDIUM risk — legal ops review');}
+  else if(risk==='MEDIUM'){queue='legal_ops';reasons.push('MEDIUM risk: legal ops review');}
   else{if(meta.urgency.includes('Urgent')){queue='legal_ops';reasons.push('LOW risk but URGENT');}else{queue='auto_approved';reasons.push('LOW risk, sufficient confidence');}}
   for(const cl of result.key_clauses)if(cl.severity==='critical'&&queue!=='senior_attorney'){queue='senior_attorney';reasons.push(`Override: critical ${cl.clause_type}`);break;}
   STATE.totalProcessed++;
@@ -791,7 +791,7 @@ function renderQueues(){
     const items=STATE.queues[q];
     document.getElementById(`q-${sk}-count`).textContent=items.length;
     const con=document.getElementById(`q-${sk}-items`);
-    con.innerHTML=items.length?items.map(i=>`<div class="card" style="border-left:3px solid ${bc};"><h4>${i.id} — ${i.name}</h4><p>${i.doc_type}<br>Risk: ${badgeHTML(i.risk_level)} · Confidence: ${(i.confidence*100).toFixed(0)}%<br><span style="font-size:.7rem;color:var(--text-muted);">${i.routing_reason}</span></p></div>`).join(''):'<div class="queue-empty">Queue empty</div>';
+    con.innerHTML=items.length?items.map(i=>`<div class="card" style="border-left:3px solid ${bc};"><h4>${i.id} · ${i.name}</h4><p>${i.doc_type}<br>Risk: ${badgeHTML(i.risk_level)} · Confidence: ${(i.confidence*100).toFixed(0)}%<br><span style="font-size:.7rem;color:var(--text-muted);">${i.routing_reason}</span></p></div>`).join(''):'<div class="queue-empty">Queue empty</div>';
   });
 }
 
