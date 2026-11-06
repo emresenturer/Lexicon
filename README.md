@@ -14,6 +14,10 @@ AI-powered legal contract risk triage and workflow automation with human-in-the-
 
 [ai-lexicon.netlify.app](https://ai-lexicon.netlify.app/)
 
+## How the analysis works
+
+This is a portfolio demonstration. Clause scoring runs on a built-in rule engine in the browser (`lexicon-heuristic-v1`), so it works instantly with no API key and no data leaves your machine. The prompt lab shows the prompts a production version would send to an LLM.
+
 ## Run it locally
 
 The app is a single self-contained page — no build step, no dependencies:

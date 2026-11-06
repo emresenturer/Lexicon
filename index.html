@@ -685,7 +685,7 @@ function analyzeContract(text){
   return{risk_level:rl,confidence:conf,reasoning:`${cc} critical and ${mc} major signals across ${clauses.length} clauses. ${cc>0?'Critical liability exposure — immediate escalation.':mc>=2?'Multiple non-standard provisions warrant review.':'Substantially standard contract.'}`,key_clauses:clauses.length?clauses:[{clause_type:'general',text_reference:'Standard terms',risk_flag:'No significant risk flags',severity:'minor'}],summary:`${clauses.length} risk-bearing clauses, ${cc} critical, ${mc} major. ${rl==='HIGH'?'Immediate senior review required.':rl==='MEDIUM'?'Legal ops review recommended.':'Low risk profile.'}`,recommendations:recs,missing_protections:miss,estimated_exposure:cc>0?'Potentially unlimited — uncapped liability':mc>=2?'Moderate — non-standard terms':'Low — standard market terms',_meta:{model:'lexicon-heuristic-v1',prompt_version:PROMPTS[STATE.activePrompt]?.name||'v1.1',timestamp:new Date().toISOString(),engine:'Deterministic clause matching + rules engine'}};
 }
 
-function logAudit(a,d){STATE.auditLog.unshift({timestamp:new Date().toISOString(),action:a,details:d,model:'claude-sonnet-4-20250514',prompt_version:PROMPTS[STATE.activePrompt]?.name||'v1.1',session:Math.random().toString(36).substr(2,8)});updateSidebarStats();}
+function logAudit(a,d){STATE.auditLog.unshift({timestamp:new Date().toISOString(),action:a,details:d,model:'lexicon-heuristic-v1',prompt_version:PROMPTS[STATE.activePrompt]?.name||'v1.1',session:Math.random().toString(36).substr(2,8)});updateSidebarStats();}
 
 function routeContract(result,meta){
   const c=STATE.config,risk=result.risk_level,conf=result.confidence,reasons=[];let queue;
